@@ -1,0 +1,155 @@
+{
+    "data": [
+        {
+            "id": 0,
+            "Guid": "9da5857e-cbc8-414e-a4d2-cccceb9fff06",
+            "startDate": "2019-02-03",
+            "endDate": "2021-06-20",
+            "name": "Randgo",
+            "manuallyScheduled": true,
+            "expanded": true,
+            "children": [
+                {
+                    "id": 56,
+                    "name": "tes wes",
+                    "Guid": "87a97172-802c-42ca-b83e-9a59f8bd3faf",
+                    "startDate": "2021-05-05",
+                    "endDate": "2021-06-20",
+                    "manuallyScheduled": true,
+                    "expanded": true,
+                    "children": [
+                        {
+                            "id": 9,
+                            "Guid": "6ea1a756-a651-4a17-b9d1-02fb7c26c103",
+                            "startDate": "2021-05-05",
+                            "priority": null,
+                            "status": null,
+                            "endDate": "2021-06-20",
+                            "clientName": null,
+                            "projectName": null,
+                            "name": "Test Ratet",
+                            "completed": "NotCompleted",
+                            "manuallyScheduled": true,
+                            "expanded": true,
+                            "children": [
+                                {
+                                    "id": 165279,
+                                    "Guid": "5666c91a-cf0b-49ee-bfee-fc245b7f1550",
+                                    "name": "New Task",
+                                    "startDate": "2021-05-05",
+                                    "endDate": "2021-06-20",
+                                    "hours": "20.0",
+                                    "note": "Description for the new task",
+                                    "status": "Assigned",
+                                    "resource": "Wessel Pretorius",
+                                    "priority": "Critical",
+                                    "type": "Change Request",
+                                    "manuallyScheduled": true
+                                },
+                                {
+                                    "id": 165282,
+                                    "Guid": "9c7bd264-2e21-4757-8f4c-dca7407117bf",
+                                    "name": "Shampoo Shampoo Shampooo",
+                                    "startDate": "2021-05-05",
+                                    "endDate": "2021-05-20",
+                                    "hours": "20.0",
+                                    "note": "Description for the new task",
+                                    "status": "Assigned",
+                                    "resource": "Wessel Pretorius",
+                                    "priority": "Urgent",
+                                    "type": "Change Request",
+                                    "manuallyScheduled": true
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 57,
+                    "name": "johan se gesig skop",
+                    "Guid": "c41f4e62-d44a-47a2-b4a8-1eae4e07e292",
+                    "startDate": "2019-02-03",
+                    "endDate": "2020-03-09",
+                    "manuallyScheduled": true,
+                    "expanded": true,
+                    "children": [
+                        {
+                            "id": 2,
+                            "Guid": "264fe176-0c38-42d1-a8a0-a353bbda90df",
+                            "startDate": "2019-02-03",
+                            "priority": null,
+                            "status": null,
+                            "endDate": "2019-03-05",
+                            "clientName": null,
+                            "projectName": null,
+                            "name": "Johan ",
+                            "completed": "NotCompleted",
+                            "manuallyScheduled": true,
+                            "expanded": true,
+                            "children": [
+                                {
+                                    "id": 1024,
+                                    "Guid": "27dabb82-834a-4f9c-885a-8d50ce4d0a47",
+                                    "name": "zsvzsd",
+                                    "startDate": "2019-03-05",
+                                    "endDate": "2019-03-05",
+                                    "hours": "3.0",
+                                    "note": "EK TOETS TRACKER",
+                                    "status": "Assigned",
+                                    "resource": "Tristan Botha",
+                                    "priority": "Low",
+                                    "type": "New Development",
+                                    "manuallyScheduled": true
+                                },
+                                {
+                                    "id": 1023,
+                                    "Guid": "0d74fbb1-5698-47c6-ae58-6f56a3544cdb",
+                                    "name": "xszdcvzsd",
+                                    "startDate": "2019-02-03",
+                                    "endDate": "2019-02-03",
+                                    "hours": "3.0",
+                                    "note": "EK TOETS TRACKER",
+                                    "status": "Assigned",
+                                    "resource": "Tristan Botha",
+                                    "priority": "Low",
+                                    "type": "New Development",
+                                    "manuallyScheduled": true
+                                }
+                            ]
+                        },
+                        {
+                            "id": 5,
+                            "Guid": "11a9a891-f67f-44d0-8b4c-7558783c44ab",
+                            "startDate": "2020-03-09",
+                            "priority": null,
+                            "status": null,
+                            "endDate": "2020-03-09",
+                            "clientName": null,
+                            "projectName": null,
+                            "name": "fhgdgdfser",
+                            "completed": "NotCompleted",
+                            "manuallyScheduled": true,
+                            "expanded": true,
+                            "children": [
+                                {
+                                    "id": 1032,
+                                    "Guid": "3c4207d6-4e67-4ecf-96e1-c9dc107778bd",
+                                    "name": "#Tristan",
+                                    "startDate": "2020-03-09",
+                                    "endDate": "2020-03-09",
+                                    "hours": "4.0",
+                                    "note": "<p>asdasd</p>",
+                                    "status": "Assigned",
+                                    "resource": "Tristan Botha",
+                                    "priority": "Urgent",
+                                    "type": "Report Request",
+                                    "manuallyScheduled": true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
