@@ -1,0 +1,49 @@
+<div class="filters-dropdown">
+    <!-- Dropdown for Clients -->
+    <div class="dropdown">
+        <div class="dropdown-button" (click)="toggleDropdown($event)">Select Clients</div>
+        <div class="dropdown-content">
+            <label *ngFor="let client of clients">
+                <input type="checkbox" [checked]="selectedClients.includes(client.id)" (change)="selectItem(client.id, 'client')">
+                {{ client.name }}
+            </label>
+        </div>
+    </div>
+
+    <!-- Dropdown for Projects -->
+    <div class="dropdown">
+        <div class="dropdown-button" (click)="toggleDropdown($event)">Select Projects</div>
+        <div class="dropdown-content">
+            <label *ngFor="let project of projects">
+                <input type="checkbox" [checked]="selectedProjects.includes(project.id)" (change)="selectItem(project.id, 'project')">
+                {{ project.name }}
+            </label>
+        </div>
+    </div>
+
+    <!-- Dropdown for Sprints -->
+    <div class="dropdown">
+        <div class="dropdown-button" (click)="toggleDropdown($event)">Select Sprints</div>
+        <div class="dropdown-content">
+            <label *ngFor="let sprint of sprints">
+                <input type="checkbox" [checked]="selectedSprints.includes(sprint.id)" (change)="selectItem(sprint.id, 'sprint')">
+                {{ sprint.name }}
+            </label>
+        </div>
+    </div>
+
+    <!-- Dropdown for Resources -->
+    <div class="dropdown">
+        <div class="dropdown-button" (click)="toggleDropdown($event)">Select Resources</div>
+        <div class="dropdown-content">
+            <label *ngFor="let resource of resources">
+                <input type="checkbox" [checked]="selectedResources.includes(resource.id)" (change)="selectItem(resource.id, 'resource')">
+                {{ resource.name }}
+            </label>
+        </div>
+    </div>
+    <button class="apply-button" (click)="applyFilters()">Apply</button>
+</div>
+
+
+<div #ganttContainer class="gantt-container"></div>

@@ -1,0 +1,183 @@
+@import "@bryntum/gantt/gantt.material.css";
+@import "@bryntum/demo-resources/scss/example.scss";
+
+app-gantt {
+    flex : 1;
+}
+
+#container {
+    display        : flex;
+    flex-direction : column;
+    height         : 100%;
+    
+}
+
+.b-gantt {
+    > .b-toolbar {
+        border-bottom : 1px solid;
+
+        > .b-content-element {
+            > .b-widget:not(.b-last-visible-child) {
+                margin-right : 1em;
+            }
+
+            .b-button {
+                min-width : 3.5em;
+            }
+        }
+    }
+}
+
+.first-button-group {
+    margin-left: 62em;
+}
+
+.filter-by-name label {
+    display : '';
+}
+
+.b-theme-stockholm .b-gantt > .b-toolbar {
+    border-bottom-color : #d8d9da;
+}
+
+.b-theme-classic .b-gantt > .b-toolbar {
+    background-color    : #f1f1f4;
+    border-bottom-color : #b0b0b6;
+
+    .b-has-label label {
+        color : #555;
+    }
+}
+
+.b-theme-classic-light .b-gantt > .b-toolbar {
+    background-color    : #fff;
+    border-bottom-color : #e0e0e0;
+}
+
+.b-theme-material .b-gantt > .b-toolbar {
+    background-color : #fff;
+    border-bottom    : none;
+
+    .filter-by-name label {
+        display : block;
+    }
+}
+
+.b-theme-classic-dark .b-gantt > .b-toolbar {
+    background-color    : #2b2b2f;
+    border-bottom-color : #2a2b2e;
+}
+
+.b-status-column-cell {
+    font-size : 0.8em;
+}
+
+.b-status-column-cell i::before {
+    margin-right : .5em;
+}
+
+.Assigned {
+    color : #053ef8fd;
+}
+
+.InProgress {
+    color : #f4f74b;
+}
+
+.Completed {
+    color : #34d844;
+}
+
+.NotCompleted {
+    color : #ff9900
+}
+
+.Parked {
+    color : #ff9900
+}
+
+.Unassigned {
+    color : #DC3545
+}
+
+.DELETED {
+    color : #6C757D
+}
+
+.Requested {
+    color : #6F42C1
+}
+
+.Awaiting.Feedback {
+    color : #17A2B8
+}
+
+.Urgent {
+    color : #ff9900
+}
+
+.Critical {
+    color : #DC3545
+}
+
+.Low {
+    color : #053ef8fd;
+}
+
+.not-completed {
+    color : #ff9900
+}
+
+.completed {
+    color : #34d844;
+}
+
+.settings-menu .b-slider {
+    margin-bottom : 0.5em;
+}
+
+.b-fa-small {
+    font-size: 0.8em; 
+    padding-right: 0.8em;
+}
+
+.b-grid-row.task-highlighted {
+    background-color: #d4e3f5;
+}
+
+
+.task-highlighted {
+    background-color: #3a7ac7; 
+}
+
+.Bug {
+    color: #90fa4a
+}
+
+.Change.Request {
+    color: #ff90d4;
+}
+
+.New.Development {
+    color: #ebff90;
+}
+
+.Nuisance.Request {
+    color: #9097ff;
+}
+
+.Report.Request {
+    color: #f5c867;
+}
+
+.Support.Request {
+    color: #fd6969;
+}
+
+.Training.Issue {
+    color: #4058c7;
+}
+
+.System.Generated.Check {
+    color: #cff5a5;
+}

@@ -1,0 +1,134 @@
+/* Base styling */
+* {
+    box-sizing: border-box;
+}
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Use a modern font */
+    margin-top: 17px;
+}
+
+.dropdown-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+    width: 180px; /* Adjusted width */
+    transition: background-color 0.3s ease; /* Smooth background transition */
+    outline: none; /* Remove focus outline */
+    &:hover, &:focus {
+        background-color: darken(#0055ff, 5%);
+    }
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 180px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1;
+    border-radius: 4px;
+    padding: 10px 0; /* Vertical padding for the dropdown */
+    top: 100%; /* Position right below the button */
+    left: 0;
+    border: 1px solid #ddd; /* Add border for definition */
+}
+
+/* Style the links (items) inside the dropdown */
+.dropdown-content label {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.2s; /* Animation for hover */
+    &:hover {
+        background-color: #f1f1f1;
+    }
+}
+
+/* Custom checkbox styles */
+.custom-checkbox {
+    position: relative;
+    padding-left: 24px;
+    cursor: pointer;
+    user-select: none;
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+        &:checked ~ .checkmark {
+            background-color: #007bff;
+            &:after {
+                display: block;
+            }
+        }
+    }
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 16px;
+        width: 16px;
+        background-color: #eee;
+        border-radius: 3px;
+        &:after {
+            content: '';
+            position: absolute;
+            display: none;
+            left: 5px;
+            top: 1px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+    }
+}
+
+/* Apply button styles */
+.apply-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    &:hover {
+        background-color: darken(#28a745, 10%);
+    }
+}
+
+/* Show the dropdown menu on hover and focus */
+.dropdown:hover .dropdown-content,
+.dropdown:active .dropdown-content {
+    display: block;
+}
+
+.gantt-container {
+    width: 100%;
+    height: 100%;
+}
+
+.filters-dropdown {
+    position: absolute; // Position the toolbar absolutely
+    top: 0; // Align to the top of the relative container
+    left: 0; // Align to the right of the relative container
+    z-index: 1; // Ensure it appears above the Gantt's toolbar
+    padding-right: 50px;
+}
+
