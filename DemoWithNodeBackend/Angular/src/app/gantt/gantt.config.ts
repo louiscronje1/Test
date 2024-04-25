@@ -106,8 +106,8 @@ const ganttConfig = {
     // tbar : {
     //     type : 'gantttoolbar'
     // }
-    tbar : {
-        type : 'gantttoolbar' as 'toolbar' // Explicitly cast the type to satisfy TypeScript
-    }
+     tbar : {
+         type : 'gantttoolbar' as 'toolbar' // Explicitly cast the type to satisfy TypeScript
+     }
 };
 export default ganttConfig;

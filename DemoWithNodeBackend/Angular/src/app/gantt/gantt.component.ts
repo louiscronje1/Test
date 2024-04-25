@@ -78,7 +78,7 @@ export class GanttComponent implements OnInit, AfterViewInit {
         this.apiService.fetchFilteredData(params).subscribe({
             next: (response) => {
                 if (this.ganttInstance && this.ganttInstance.project && this.ganttInstance.project.taskStore) {
-                    this.ganttInstance.project.taskStore.loadData(response.data);
+                    this.ganttInstance.project.taskStore.loadDataAsync(response.data);
                     console.log('Filters applied, data loaded');
                 } else {
                     console.error('Gantt chart or project not initialized');
@@ -157,13 +157,146 @@ export class GanttComponent implements OnInit, AfterViewInit {
                 break;
         }
     }
-    
-    
-
 
     toggleDropdown(event: Event): void {
         event.stopPropagation();
         const dropdown = (event.target as HTMLElement).closest('.dropdown');
         dropdown.classList.toggle('active');
     }
+
+    autoSaveEnabled: boolean = false;
+
+    toggleAutoSave(): void {
+        this.autoSaveEnabled = !this.autoSaveEnabled;
+    }
+
+    manualSave(): void {
+        if (this.ganttInstance) {
+            const data = this.serializeGanttData();
+            this.saveData(data);
+        }
+    }
+
+    // serializeGanttData(): any {
+    //     const serializedData = { Sprints: [] };
+    
+    //     // Iterate through the deeply nested structure
+    //     this.ganttInstance.project.taskStore.rootNode.children.forEach(client => {
+    //         client.children.forEach(project => {
+    //             const clientID = client.ClientID; // Get the ClientID
+    //             project.children.forEach(sprint => {
+    //                 const projectID = project.ProjectID; // Get the ProjectID
+    //                 const newSprint = {
+    //                     SprintID: sprint.id,
+    //                     Guid: sprint.guid,
+    //                     startDate: sprint.startDate,
+    //                     endDate: sprint.endDate,
+    //                     SprintTitle: sprint.name,
+    //                     SprintIsCompleted: sprint.completed, // Assuming this field exists or similar logic
+    //                     manuallyScheduled: sprint.manuallyScheduled,
+    //                     expanded: sprint.expanded,
+    //                     SprintClientID: clientID, // Assigning the ClientID to the Sprint
+    //                     SprintProjectID: projectID, // Assigning the ProjectID to the Sprint
+    //                     Tasks: []
+    //                 };
+    
+    //                 sprint.children.forEach(task => {
+    //                     const newTask = {
+    //                         TaskID: task.id,
+    //                         Guid: task.guid,
+    //                         TaskTitle: task.name,
+    //                         TaskStartDate: task.startDate,
+    //                         TaskEndDate: task.endDate,
+    //                         PlannedHours: task.hours, // Ensure these fields match with your task model
+    //                         TaskDescription: task.note,
+    //                         TaskStatus: task.status,
+    //                         AssignedResource: task.resource,
+    //                         TaskPriority: task.priority,
+    //                         TaskType: task.type,
+    //                         manuallyScheduled: task.manuallyScheduled
+    //                     };
+    //                     newSprint.Tasks.push(newTask);
+    //                 });
+    
+    //                 serializedData.Sprints.push(newSprint);
+    //             });
+    //         });
+    //     });
+    
+    //     // Log the JSON structure to the console
+    //     console.log('Serialized Data:', JSON.stringify(serializedData, null, 2));
+    
+    //     return serializedData;
+    // }
+    
+    serializeGanttData() {
+        const serializedData = { Sprints: [] };
+        const { assignmentStore } = this.ganttInstance.project;
+    
+        this.ganttInstance.project.taskStore.rootNode.children.forEach(client => {
+            client.children.forEach(project => {
+                const clientID = client.id;
+                project.children.forEach(sprint => {
+                    const projectID = project.id;
+                    const newSprint = {
+                        SprintID: sprint.id,
+                        Guid: sprint.guid,
+                        startDate: sprint.startDate,
+                        endDate: sprint.endDate,
+                        SprintTitle: sprint.name,
+                        SprintCompletedStatus: sprint.completed,
+                        manuallyScheduled: sprint.manuallyScheduled,
+                        expanded: sprint.expanded,
+                        ClientID: clientID,
+                        ProjectID: projectID,
+                        Tasks: []
+                    };
+    
+                    sprint.children.forEach(task => {
+                        const assignments = assignmentStore.getAssignmentsForTask(task.id);
+                        const resources = assignments.map(assignment => ({
+                            resourceId: assignment.resourceId
+                        }));
+    
+                        const newTask = {
+                            TaskID: task.id,
+                            Guid: task.guid,
+                            TaskTitle: task.name,
+                            TaskStartDate: task.startDate,
+                            TaskEndDate: task.endDate,
+                            PlannedHours: task.hours,
+                            TaskDescription: task.note,
+                            TaskStatus: task.status,
+                            AssignedResources: resources,
+                            TaskPriority: task.priority,
+                            TaskType: task.type,
+                            manuallyScheduled: task.manuallyScheduled
+                        };
+                        newSprint.Tasks.push(newTask);
+                    });
+    
+                    serializedData.Sprints.push(newSprint);
+                });
+            });
+        });
+    
+        console.log('Serialized Data:', JSON.stringify(serializedData, null, 2));
+        // console.log('Assignments JSON:', JSON.stringify(this.ganttInstance.project.assignmentStore.records.map(assignment => assignment.toJSON()), null, 2));
+    
+        return serializedData;
+    }
+    
+
+    saveData(data: any): void {
+        this.apiService.saveGanttData(data).subscribe({
+            next: () => console.log('Data saved successfully'),
+            error: (error) => console.error('Error saving data', error)
+        });
+    }
+
+    logSerializedData(): void {
+        this.serializeGanttData();
+    }
+
+
 }

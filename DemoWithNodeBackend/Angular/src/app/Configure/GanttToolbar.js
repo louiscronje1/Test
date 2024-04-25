@@ -16,21 +16,21 @@
             return 'GanttToolbar';
         }
 
-        // Called when toolbar is added to the Gantt panel
         set parent(parent) {
             super.parent = parent;
             const me = this;
             me.gantt = parent;
 
-            parent.project.on({
-                load: 'updateStartDateField',
-                refresh: 'updateStartDateField',
-                thisObj: me
-            });
+        parent.project.on({
+            load: ()=>{console.log('onLoad')},
+            refresh: ()=> {console.log('onRefresh')},
+            thisObj: me
+        });
 
-            me.styleNode = document.createElement('style');
-            document.head.appendChild(me.styleNode);
+        me.styleNode = document.createElement('style');
+        document.head.appendChild(me.styleNode);
         }
+        
 
         get parent() {
             return super.parent;
@@ -91,9 +91,7 @@
                         ref: 'filterByName',
                         cls: 'filter-by-name',
                         flex: '0 0 12.5em',
-                        // Label used for material, hidden in other themes
                         label: 'Find Task By Name',
-                        // Placeholder for others
                         placeholder: 'Find Task By Name',
                         clearable: true,
                         keyStrokeChangeDelay: 100,

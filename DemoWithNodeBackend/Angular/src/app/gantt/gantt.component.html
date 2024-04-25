@@ -1,4 +1,16 @@
 <div class="filters-dropdown">
+
+    <div class="custom-toolbar">
+        <button (click)="toggleAutoSave()">
+            {{ autoSaveEnabled ? 'Disable Auto-Save' : 'Enable Auto-Save' }}
+        </button>
+        <button (click)="manualSave()" [disabled]="autoSaveEnabled">
+            Save Changes
+        </button>
+    </div>
+    <!-- In your component's template -->
+    
+    
     <!-- Dropdown for Clients -->
     <div class="dropdown">
         <div class="dropdown-button" (click)="toggleDropdown($event)">Select Clients</div>
@@ -43,6 +55,7 @@
         </div>
     </div>
     <button class="apply-button" (click)="applyFilters()">Apply</button>
+    <button (click)="logSerializedData()">Log Serialized Data</button>
 </div>
 
 

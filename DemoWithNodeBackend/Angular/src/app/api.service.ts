@@ -21,11 +21,11 @@ export class APIService {
     }
 
     fetchResources( params: { ClientID: string, ProjectID: string, SprintID: string}): Observable<any> {
-        return this.http.post('api/FilteredResources', params);
+        return this.http.post('api/FileredResources', params);
     }
 
     fetchFilteredData(filters: any): Observable<any> {
-        return this.http.post('/api/FilteredData', filters);
+        return this.http.post('api/FilteredData', filters);
     }
 
     fetchAllClients(): Observable<any> {
@@ -42,5 +42,10 @@ export class APIService {
 
     fetchAllResources(): Observable<any> {
         return this.http.get('api/Resources');
+    }
+
+    saveGanttData(data: any) {
+        const url = 'https://your-api-url.com/saveGanttData';
+        return this.http.post(url, data);
     }
 }

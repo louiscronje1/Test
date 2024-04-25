@@ -5,5 +5,5 @@ export default class Task extends TaskModel {
         return 'Task';
     }
 
-    static fields = [ 'status', 'clientName', 'priority', 'completed', 'type' ]
+    static fields = [ 'status', 'clientName', 'priority', 'completed', 'type', 'ProjectID' ]
 }
