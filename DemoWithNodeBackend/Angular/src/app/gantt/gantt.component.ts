@@ -192,7 +192,7 @@ export class GanttComponent implements OnInit, AfterViewInit {
     //                     startDate: sprint.startDate,
     //                     endDate: sprint.endDate,
     //                     SprintTitle: sprint.name,
-    //                     SprintIsCompleted: sprint.completed, // Assuming this field exists or similar logic
+    //                     SprintIsCompleted: sprint.completed,
     //                     manuallyScheduled: sprint.manuallyScheduled,
     //                     expanded: sprint.expanded,
     //                     SprintClientID: clientID, // Assigning the ClientID to the Sprint
@@ -207,7 +207,7 @@ export class GanttComponent implements OnInit, AfterViewInit {
     //                         TaskTitle: task.name,
     //                         TaskStartDate: task.startDate,
     //                         TaskEndDate: task.endDate,
-    //                         PlannedHours: task.hours, // Ensure these fields match with your task model
+    //                         PlannedHours: task.hours,
     //                         TaskDescription: task.note,
     //                         TaskStatus: task.status,
     //                         AssignedResource: task.resource,
