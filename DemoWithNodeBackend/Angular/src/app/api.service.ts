@@ -45,7 +45,15 @@ export class APIService {
     }
 
     saveGanttData(data: any) {
-        const url = 'https://your-api-url.com/saveGanttData';
+        const url = 'api/DataAccess/UpdateSprintTasks';
         return this.http.post(url, data);
+    }
+
+    fetchAssignments(): Observable<any> {
+        return this.http.get('api/Assignments');
+    }
+
+    fetchInitialResources(): Observable<any> {
+        return this.http.get('api/Resources')
     }
 }

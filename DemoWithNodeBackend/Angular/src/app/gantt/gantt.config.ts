@@ -4,6 +4,7 @@ import '../Columns/CompletedColumn.js';
 import '../Columns/PriorityColumn.js';
 import '../Columns/TypeColumn.js'
 import Task from '../Models/Task.js';
+import { WidgetHelper } from '@bryntum/gantt';
 
 const ganttConfig = {
     dependencyIdField : 'wbsCode',
@@ -18,11 +19,13 @@ const ganttConfig = {
         },
         resourceStore : {
             autoLoad : true,
-            readUrl : `api/Resources`
+            readUrl : `api/Resources`,
+            autoReload : true
         },
         assignmentStore : {
             autoLoad : true,
-            readUrl : `api/Assignments`
+            readUrl : `api/Assignments`,
+            autoReload : true
         }
     },
     startDate : '2019-01-20',
@@ -42,6 +45,24 @@ const ganttConfig = {
                 }
             },
         },
+        // {
+        //     type: 'widget',
+        //     text: '',
+        //     width: 110,
+        //     widgets: [{
+        //         type: 'button',
+        //         cls: 'b-blue b-raised',
+        //         icon: 'b-icon b-icon-external-link',
+        //         text: 'Devlog',
+        //         tooltip: 'View task on Devlog',
+        //         onAction: ({ record }) => {
+        //             const taskGuid = record.TaskGuid || record.id;
+        //             const url = `http://devlog.workablemanagement.solutions/Task/Index?TaskGuid=${taskGuid}`;
+        //             window.open(url, '_blank');
+        //         }
+        //     }],
+        //     // No need to use WidgetHelper.createWidget in the renderer, as widgets array configures them
+        // },
         { type : 'startdate', text : 'Start Date' },
         { type : 'enddate', text : 'End Date' },
         { type : 'completedcolumn', width : 150, field : 'completed' },

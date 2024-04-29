@@ -138,6 +138,20 @@
             this.gantt.shiftNext();
         }
 
+        onFilterChange({ value }) {
+            if (value === '') {
+                this.gantt.taskStore.clearFilters();
+            }
+            else {
+                value = value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    
+                this.gantt.taskStore.filter({
+                    filters : task => task.name && task.name.match(new RegExp(value, 'i')),
+                    replace : true
+                });
+            }
+        }
+
     }
 
     GanttToolbar.initClass();

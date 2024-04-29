@@ -1,14 +1,17 @@
 <div class="filters-dropdown">
 
     <div class="custom-toolbar">
-        <button (click)="toggleAutoSave()">
+        <!-- <button (click)="toggleAutoSave()">
             {{ autoSaveEnabled ? 'Disable Auto-Save' : 'Enable Auto-Save' }}
-        </button>
-        <button (click)="manualSave()" [disabled]="autoSaveEnabled">
+        </button> -->
+        <!-- <button (click)="manualSave()" [disabled]="autoSaveEnabled" class="save-button">
+            Save Changes
+        </button>    -->
+        <button (click)="manualSave()" [disabled]="autoSaveEnabled" class="save-button">
             Save Changes
         </button>
+             
     </div>
-    <!-- In your component's template -->
     
     
     <!-- Dropdown for Clients -->
@@ -40,7 +43,7 @@
             <label *ngFor="let sprint of sprints">
                 <input type="checkbox" [checked]="selectedSprints.includes(sprint.id)" (change)="selectItem(sprint.id, 'sprint')">
                 {{ sprint.name }}
-            </label>
+            </label>        
         </div>
     </div>
 
@@ -55,7 +58,7 @@
         </div>
     </div>
     <button class="apply-button" (click)="applyFilters()">Apply</button>
-    <button (click)="logSerializedData()">Log Serialized Data</button>
+    <!-- <button (click)="logSerializedData()">Log Serialized Data</button> -->
 </div>
 
 
