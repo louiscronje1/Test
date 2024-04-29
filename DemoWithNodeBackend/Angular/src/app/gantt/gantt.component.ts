@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { APIService } from '../api.service';
 import ganttConfig from './gantt.config';
-import { Gantt } from '@bryntum/gantt';
+import { Gantt, Toast, Mask } from '@bryntum/gantt';
 
 @Component({
     selector: 'app-gantt',
@@ -90,61 +90,6 @@ export class GanttComponent implements OnInit, AfterViewInit {
         });
     }
     
-    // applyFilters(): void {
-    //     let params = {
-    //         ClientID: this.selectedClients.join(',') || '',
-    //         ProjectID: this.selectedProjects.join(',') || '',
-    //         SprintID: this.selectedSprints.join(',') || '',
-    //         ResourceID: this.selectedResources.join(',') || ''
-    //     };
-    
-    //     Object.keys(params).forEach(key => {
-    //         if (params[key] === '') {
-    //             delete params[key];
-    //         }
-    //     });
-    
-    //     // Fetch the filtered tasks, assignments, and resources sequentially
-    //     this.apiService.fetchFilteredData(params).subscribe({
-    //         next: (response) => {
-    //             if (this.ganttInstance && this.ganttInstance.project && this.ganttInstance.project.taskStore) {
-    //                 // Clear the current assignment and resource data
-    //                 this.ganttInstance.project.assignmentStore.removeAll();
-    //                 this.ganttInstance.project.resourceStore.removeAll();
-    
-    //                 // Load tasks
-    //                 this.ganttInstance.project.taskStore.loadDataAsync(response.data);
-    
-    //                 // Fetch and load assignments
-    //                 this.apiService.fetchAssignments().subscribe({
-    //                     next: (assignmentResponse) => {
-    //                         this.ganttInstance.project.assignmentStore.loadData(assignmentResponse.assignments);
-    
-    //                         // Fetch and load resources
-    //                         this.apiService.fetchInitialResources().subscribe({
-    //                             next: (resourceResponse) => {
-    //                                 this.ganttInstance.project.resourceStore.loadData(resourceResponse.resources);
-    //                                 console.log('Resources and assignments reloaded');
-    //                             },
-    //                             error: (error) => console.error('Error fetching resources', error)
-    //                         });
-    //                     },
-    //                     error: (error) => console.error('Error fetching assignments', error)
-    //                 });
-    
-    //                 console.log('Filters applied, task data loaded');
-    //             } else {
-    //                 console.error('Gantt chart or project not initialized');
-    //             }
-    //         },
-    //         error: (error) => {
-    //             console.error('Failed to apply filters and fetch task data', error);
-    //         }
-    //     });
-    // }
-    
-    
-
     selectItem(itemId: string, category: string): void {
         let array = this.getSelectionArray(category);
         const index = array.indexOf(itemId);
@@ -232,63 +177,99 @@ export class GanttComponent implements OnInit, AfterViewInit {
     }
 
     serializeGanttData() {
-    const serializedData = { Sprints: [] };
-
-    this.ganttInstance.project.taskStore.rootNode.children.forEach(client => {
-        client.children.forEach(project => {
+        const serializedData = { Sprints: [] };
+      
+        this.ganttInstance.project.taskStore.rootNode.children.forEach(client => {
+          client.children.forEach(project => {
             const clientID = client.ClientID;
             project.children.forEach(sprint => {
-                const projectID = project.ProjectID;
-                const newSprint = {
-                    SprintID: sprint.id,
-                    Guid: sprint.guid,
-                    SprintTitle: sprint.name,
-                    SprintCompletedStatus: sprint.completed,
-                    ClientID: clientID,
-                    ProjectID: projectID,
-                    SprintStatus: sprint.SprintStatus,
-                    Tasks: []
+              const projectID = project.ProjectID;
+              const newSprint = {
+                SprintID: sprint.id,
+                Guid: sprint.guid,
+                SprintTitle: sprint.name,
+                SprintCompletedStatus: sprint.completed,
+                ClientID: clientID,
+                ProjectID: projectID,
+                SprintStatus: sprint.SprintStatus,
+                Tasks: []
+              };
+      
+              sprint.children.forEach(task => {
+                const assignmentRecords = task.assignments;
+                const assignedResource = assignmentRecords.length > 0 ? assignmentRecords[0].resource : null;
+                const resourceId = assignedResource ? assignedResource.id : null;
+      
+                // Check if TaskID is a generated ID and set it to null if it is
+                const isGeneratedId = /^_generated/.test(task.id);
+                const taskID = isGeneratedId ? null : task.id;
+      
+                const newTask = {
+                  TaskID: taskID,
+                  Guid: task.guid,
+                  TaskTitle: task.name,
+                  TaskStartDate: task.startDate,
+                  TaskEndDate: task.endDate,
+                  PlannedHours: task.hours,
+                  TaskDescription: task.note,
+                  TaskStatus: task.status,
+                  TaskResourceID: resourceId,
+                  TaskPriority: task.priority,
+                  TaskType: task.type,
                 };
-
-                sprint.children.forEach(task => {
-                    const assignmentRecords = task.assignments;
-
-                    const assignedResource = assignmentRecords.length > 0 ? assignmentRecords[0].resource : null;
-                    const resourceId = assignedResource ? assignedResource.id : null;
-
-                    const newTask = {
-                        TaskID: task.id,
-                        Guid: task.guid,
-                        TaskTitle: task.name,
-                        TaskStartDate: task.startDate,
-                        TaskEndDate: task.endDate,
-                        PlannedHours: task.hours,
-                        TaskDescription: task.note,
-                        TaskStatus: task.status,
-                        TaskResourceID: resourceId,
-                        TaskPriority: task.priority,
-                        TaskType: task.type,
-                    };
-                    newSprint.Tasks.push(newTask);
-                });
-
-                serializedData.Sprints.push(newSprint);
+                newSprint.Tasks.push(newTask);
+              });
+      
+              serializedData.Sprints.push(newSprint);
             });
+          });
         });
-    });
+      
+        console.log(JSON.stringify(serializedData, null, 2));
+      
+        return serializedData;
+      }
+      
 
-    console.log(JSON.stringify(serializedData, null, 2));
 
-    return serializedData;
-}
-
-
-    saveData(data: any): void {
+      saveData(data: any): void {
         this.apiService.saveGanttData(data).subscribe({
-            next: () => console.log('Data saved successfully'),
-            error: (error) => console.error('Error saving data', error)
+            next: () => {
+                console.log('Data saved successfully');
+                Toast.show('Data saved successfully');
+            },
+            error: (error) => {
+                console.error('Error saving data', error);
+                Toast.show('Error saving data');
+            }
         });
     }
+
+    // saveData(data: any): void {
+    //     // Mask the Gantt component before saving data
+    //     const mask = Mask.mask({
+    //         target: this.ganttContainer.nativeElement,
+    //         text: 'Saving data...',
+    //         mode: 'dark-blur'
+    //     });
+    
+    //     // Proceed with save operation...
+    //     this.apiService.saveGanttData(data).subscribe({
+    //         next: () => {
+    //             // Simulate a delay and then unmask
+    //             setTimeout(() => {
+    //                 Mask.unmask(this.ganttContainer.nativeElement);
+    //                 console.log('Data saved successfully');
+    //                 Toast.show('Data saved successfully');
+    //             }, 2000);
+    //         },
+    //         error: (error) => {
+    //             Mask.unmask(this.ganttContainer.nativeElement);
+    //             console.error('Error saving data', error);
+    //             Toast.show('Error saving data');
+    //         }
+    //     });
+    // }
 
     logSerializedData(): void {
         this.serializeGanttData();
