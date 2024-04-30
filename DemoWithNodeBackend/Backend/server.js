@@ -7,7 +7,7 @@ app.use(express.static('public'));
 app.use(express.json());
 
 
-/////POST/////
+/////POST////
 
 app.post('/FilteredClients', (req, res) => {
     const { ProjectID, SprintID, ResourceID } = req.body;
