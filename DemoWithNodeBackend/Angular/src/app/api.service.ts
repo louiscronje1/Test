@@ -21,7 +21,7 @@ export class APIService {
     }
 
     fetchResources( params: { ClientID: string, ProjectID: string, SprintID: string}): Observable<any> {
-        return this.http.post('api/FileredResources', params);
+        return this.http.post('api/FilteredResources', params);
     }
 
     fetchFilteredData(filters: any): Observable<any> {

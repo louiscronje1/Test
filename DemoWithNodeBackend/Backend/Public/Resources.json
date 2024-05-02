@@ -2,19 +2,38 @@
     "data": [
         {
             "id": 87,
-            "name": "Dean Koekemoer"
+            "name": "Dean Koekemoer", 
+            "ClientID": [1, 2], 
+            "ProjectID": [],
+            "SprintID": []
         },
         {
             "id": 79,
-            "name": "Tristan Botha"
+            "name": "Tristan Botha",
+            "ClientID": [1, 2], 
+            "ProjectID": [57], 
+            "SprintID": [2, 5]
         },
         {
             "id": 3,
-            "name": "Tsepo Pama"
+            "name": "Tsepo Pama", 
+            "ClientID": [1, 2],
+            "ProjectID": [],
+            "SprintID": []
         },
         {
             "id": 21,
-            "name": "Wessel Pretorius"
+            "name": "Wessel Pretorius", 
+            "ClientID": [1, 2],
+            "ProjectID": [56, 57],
+            "SprintID": [9, 2]
+        },
+        {
+            "id": 99,
+            "name": "Maurice Cronje", 
+            "ClientID": [1, 2],
+            "ProjectID": [57],
+            "SprintID": [5]
         }
     ]
 }

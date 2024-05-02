@@ -2,15 +2,24 @@
     "data": [
         {
             "id": 56,
-            "name": "tes wes"
+            "name": "tes wes",
+            "ClientID": [2],
+            "SprintID": [9],
+            "ResourceID": [21]
         },
         {
             "id": 68,
-            "name": "fghjfghj"
+            "name": "fghjfghj",
+            "ClientID": [1],
+            "SprintID": [],
+            "ResourceID": []
         },
         {
             "id": 57,
-            "name": "johan se gesig skop"
+            "name": "johan se gesig skop",
+            "ClientID": [2],
+            "SprintID": [2, 5],
+            "ResourceID": [21, 79, 99]
         }
     ]
 }

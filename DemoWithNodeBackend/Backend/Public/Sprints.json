@@ -2,23 +2,38 @@
     "data": [
         {
             "id": 2,
-            "name": "Johan "
+            "name": "Johan", 
+            "ClientID": [2],
+            "ProjectID": [57],
+            "ResourceID": [21, 79]
         },
         {
             "id": 4,
-            "name": "farteyswert"
+            "name": "farteyswert",
+            "ClientID": [1],
+            "ProjectID": [], 
+            "ResourceID": []
         },
         {
             "id": 5,
-            "name": "fhgdgdfser"
+            "name": "fhgdgdfser",
+            "ClientID": [2],
+            "ProjectID": [57],
+            "ResourceID": [79, 99]
         },
         {
             "id": 9,
-            "name": "Test Ratet"
+            "name": "Test Ratet",
+            "ClientID": [2],
+            "ProjectID": [56],
+            "ResourceID": [21]
         },
         {
             "id": 11,
-            "name": "Ivan Sprint TRest new"
+            "name": "Ivan Sprint TRest new",
+            "ClientID": [1],
+            "ProjectID": [],
+            "ResourceID": []
         }
     ]
 }

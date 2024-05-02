@@ -2,11 +2,17 @@
     "data": [
         {
             "id": 1,
-            "name": "BizExtend"
+            "name": "BizExtend",
+            "ProjectID": [],
+            "SprintID": [],
+            "ResourceID": []
         },
         {
             "id": 2,
-            "name": "Randgo"
+            "name": "Randgo",
+            "ProjectID": [56, 57],
+            "SprintID": [9, 2, 5  ],
+            "ResourceID": [21, 79, 99]
         }
     ]
 }
