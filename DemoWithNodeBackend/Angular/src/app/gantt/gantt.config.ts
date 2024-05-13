@@ -4,8 +4,8 @@ import '../Columns/CompletedColumn.js';
 import '../Columns/PriorityColumn.js';
 import '../Columns/TypeColumn.js';
 import '../Columns/SprintStatusColumn.js';
+import '../Columns/ResourceNameColumn.js';
 import Task from '../Models/Task.js';
-import { WidgetHelper } from '@bryntum/gantt';
 
 const ganttConfig = {
     dependencyIdField: 'wbsCode',
@@ -16,43 +16,68 @@ const ganttConfig = {
         taskStore: {
             modelClass: Task,
             autoLoad: true,
-            readUrl: 'api/InitialData'
+            //readUrl: '/DataAccess/InitialDataGet'
+            //readUrl: 'api/DataAccess/InitialDataGet'
+            readUrl: `/api/InitialData`,
+            listeners: {
+                load: async ({ store }) => {
+                    await store.project.commitAsync()
+                    store.project.stm.enable()
+                }
+            }
+
         },
         resourceStore: {
             autoLoad: true,
-            readUrl: `api/Resources`,
-            autoReload: true
+            //readUrl: `/DataAccess/ResourcesGet`,
+            //readUrl: `api/DataAccess/ResourcesGet`,
+            readUrl: `/api/Resources`,
+            autoReload: false
         },
         assignmentStore: {
             autoLoad: true,
-            readUrl: `api/Assignments`,
-            autoReload: true
+            //readUrl: `/DataAccess/AssignmentsGet`,
+            //readUrl: `api/DataAccess/AssignmentsGet`,
+            readUrl: `/api/Assignments`,
+            autoReload: false
         }
     },
-    startDate: '2019-01-20',
-    endDate: '2022-12-31',
+    startDate: '2021-08-01',
+    endDate: '2030-12-31',
     columns: [
         { type: 'wbs', text: ' ' },
         { type: 'name', text: 'Title', width: 250 },
         {
             type: 'resourceassignment',
             text: 'Resource',
-            width: 125,
+            //field: 'resource',
+            width: 150,
             showAvatars: false,
-            itemTpl: assignment => assignment.resourceName,
+            itemTpl: (assignment) => assignment.resourceName,
             editor: {
                 chipView: {
-                    itemTpl: assignment => assignment.resourceName
+                    itemTpl: (assignment) => assignment.resourceName
                 }
-            },
+            }
         },
+        //{ type: 'resourceNameColumn' },
         { type: 'startdate', text: 'Start Date' },
         { type: 'enddate', text: 'End Date' },
-        { type: 'sprintstatuscolumn', text: 'Sprint Status', field: 'SprintStatus' },
         { type: 'completedcolumn', width: 150, field: 'completed' },
+        { type: 'sprintstatuscolumn', text: 'Sprint Status', field: 'SprintStatus', width: 150 },
         { type: 'typecolumn', width: 200, text: 'Task Type' },
-        { type: 'statuscolumn', field: 'status', width: 150, text: 'Task Status' },
-        { type: 'prioritycolumn', field: 'priority', text: 'Task Priority', width: 100 },
+        {
+            type: 'statuscolumn',
+            field: 'status',
+            width: 150,
+            text: 'Task Status'
+        },
+        {
+            type: 'prioritycolumn',
+            field: 'priority',
+            text: 'Task Priority',
+            width: 150
+        }
     ],
     subGridConfigs: {
         locked: {
@@ -64,6 +89,41 @@ const ganttConfig = {
     },
     columnLines: false,
     features: {
+        taskMenu: {
+            items: {
+                // add: {
+                //     items: {
+                //         subtask      : false,
+                //         successor    : false,
+                //         predecessor  : false
+                //     }
+                // },
+                convertToMilestone : false,
+                cut : false,
+                outdent : false,
+                indent : false,
+                deleteTask: {
+                    text: 'Remove'
+                },
+                viewInDevlog: {
+                    text: 'View on Devlog',
+                    icon: 'b-fa-external-link-alt',
+                    weight: 200,
+                    onItem: (event) => {
+                        const taskRecord = event.taskRecord;
+                        if (taskRecord) {
+                            const taskGuid = taskRecord.data.TaskGuid || taskRecord.id;
+                            if (taskGuid) {
+                                const url = `http://devlog.workablemanagement.solutions/Task/Index?TaskGuid=${taskGuid}`;
+                                window.open(url, '_blank');
+                            } else {
+                                console.error('Task GUID not found for this record');
+                            }
+                        }
+                    }
+                },
+            }
+        },        
         rollups: {
             disabled: true
         },
@@ -95,13 +155,22 @@ const ganttConfig = {
                             type: 'numberfield',
                             label: 'Planned Hours',
                             name: 'plannedHours',
-                            weight: 100,
+                            weight: 100
                         },
                         statusField: {
                             type: 'combo',
                             label: 'Status',
                             name: 'status',
-                            items: ['Assigned', 'Completed', 'InProgress', 'Parked', 'Unassigned', 'DELETED', 'Requested', 'AwaitingFeedback'],
+                            items: [
+                                'Assigned',
+                                'Completed',
+                                'InProgress',
+                                'Parked',
+                                'Unassigned',
+                                'DELETED',
+                                'Requested',
+                                'AwaitingFeedback'
+                            ],
                             weight: 110,
                             columnWidth: 0.5
                         },
@@ -117,7 +186,16 @@ const ganttConfig = {
                             type: 'combo',
                             label: 'Type',
                             name: 'type',
-                            items: ['Bug', 'Change Request', 'New Development', 'Nuisance Request', 'Report Request', 'Support Request', 'Training Issue', 'System Generated Check'],
+                            items: [
+                                'Bug',
+                                'Change Request',
+                                'New Development',
+                                'Nuisance Request',
+                                'Report Request',
+                                'Support Request',
+                                'Training Issue',
+                                'System Generated Check'
+                            ],
                             weight: 130,
                             columnWidth: 0.5
                         },
@@ -132,10 +210,17 @@ const ganttConfig = {
                             type: 'combo',
                             label: 'Sprint Status',
                             name: 'SprintStatus',
-                            items: ['New', 'InProgress', 'Completed', 'In QA', 'In Staging', 'In Live'],
+                            items: [
+                                'New',
+                                'In Progress',
+                                'Completed',
+                                'In QA',
+                                'In Staging',
+                                'In Live'
+                            ],
                             columnWidth: 0.5
                         },
-                        effort : false,
+                        effort: false,
                         duration: false,
                         percentDone: false
                     }
@@ -145,30 +230,30 @@ const ganttConfig = {
                 },
                 predecessorsTab: false,
                 successorsTab: false,
-                advancedTab: false,
-            },
-            listeners: {
-                beforeTaskEditShow: ({ source: editor, taskRecord }) => {
-                    // Dynamically adjust field visibility
-                    editor.widgetMap.plannedHours.hidden = typeof taskRecord.data.plannedHours === 'undefined';
-                    editor.widgetMap.statusField.hidden = typeof taskRecord.data.status === 'undefined';
-                    editor.widgetMap.priorityField.hidden = typeof taskRecord.data.priority === 'undefined';
-                    editor.widgetMap.typeField.hidden = typeof taskRecord.data.type === 'undefined';
-
-                    editor.refresh();
-                }
+                advancedTab: false
             }
         }
     },
+    listeners: {
+                beforeTaskEditShow: ({ editor, taskRecord }) => {
+                    // Check each field and set visibility based on whether the task record contains it
+                    editor.widgetMap.plannedHours.hidden =
+                        !taskRecord.data.hasOwnProperty('plannedHours');
+                    editor.widgetMap.statusField.hidden =
+                        !taskRecord.data.hasOwnProperty('status');
+                    editor.widgetMap.priorityField.hidden =
+                        !taskRecord.data.hasOwnProperty('priority');
+                    editor.widgetMap.typeField.hidden =
+                        !taskRecord.data.hasOwnProperty('type');
+                    editor.widgetMap.Sprintcompleted.hidden =
+                        !taskRecord.data.hasOwnProperty('completed');
+                    editor.widgetMap.sprintStatus.hidden =
+                        !taskRecord.data.hasOwnProperty('SprintStatus');
+                }
+            },
     tbar: {
         type: 'gantttoolbar' as 'toolbar' // Explicitly cast the type to satisfy TypeScript
     }
+
 };
-
 export default ganttConfig;
-
-
-
-
-
-
