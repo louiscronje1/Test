@@ -16,8 +16,6 @@ const ganttConfig = {
         taskStore: {
             modelClass: Task,
             autoLoad: true,
-            //readUrl: '/DataAccess/InitialDataGet'
-            //readUrl: 'api/DataAccess/InitialDataGet'
             readUrl: `/api/InitialData`,
             listeners: {
                 load: async ({ store }) => {
@@ -29,21 +27,17 @@ const ganttConfig = {
         },
         resourceStore: {
             autoLoad: true,
-            //readUrl: `/DataAccess/ResourcesGet`,
-            //readUrl: `api/DataAccess/ResourcesGet`,
             readUrl: `/api/Resources`,
             autoReload: false
         },
         assignmentStore: {
             autoLoad: true,
-            //readUrl: `/DataAccess/AssignmentsGet`,
-            //readUrl: `api/DataAccess/AssignmentsGet`,
             readUrl: `/api/Assignments`,
             autoReload: false
         }
     },
-    startDate: '2021-08-01',
-    endDate: '2030-12-31',
+    startDate: '2018-08-01',
+    endDate: '2022-12-31',
     columns: [
         { type: 'wbs', text: ' ' },
         { type: 'name', text: 'Title', width: 250 },
