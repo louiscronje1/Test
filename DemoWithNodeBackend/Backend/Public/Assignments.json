@@ -1,36 +1,6 @@
 {
     "data": [
         {
-<<<<<<< Updated upstream
-            "id": 1,
-            "event": 639,
-            "resource": 3
-        },
-        {
-            "id": 2,
-            "event": 1023,
-            "resource": 79
-        },
-        {
-            "id": 3,
-            "event": 1024,
-            "resource": 79
-        },
-        {
-            "id": 4,
-            "event": 1032,
-            "resource": 79
-        },
-        {
-            "id": 5,
-            "event": 165279,
-            "resource": 21
-        },
-        {
-            "id": 6,
-            "event": 165282,
-            "resource": 21
-=======
             "event": 192214,
             "resource": 21
         },
@@ -9929,7 +9899,6 @@
         {
             "event": 17617565,
             "resource": 1106
->>>>>>> Stashed changes
         }
     ]
 }

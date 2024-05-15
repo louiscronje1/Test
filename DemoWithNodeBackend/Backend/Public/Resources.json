@@ -1,22 +1,6 @@
 {
     "data": [
         {
-<<<<<<< Updated upstream
-            "id": 87,
-            "name": "Dean Koekemoer"
-        },
-        {
-            "id": 79,
-            "name": "Tristan Botha"
-        },
-        {
-            "id": 3,
-            "name": "Tsepo Pama"
-        },
-        {
-            "id": 21,
-            "name": "Wessel Pretorius"
-=======
             "id": 1154,
             "Guid": "0ede0da7-d838-4ec6-89ee-051060631252",
             "name": "Catherine Murray"
@@ -95,7 +79,6 @@
             "id": 2159,
             "Guid": "fa9ce9db-a22f-4653-898f-5578be660eb0",
             "name": "Zain Black"
->>>>>>> Stashed changes
         }
     ]
 }
