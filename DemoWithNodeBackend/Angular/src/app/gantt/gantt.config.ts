@@ -2,20 +2,28 @@ import '../Configure/GanttToolbar.js';
 import '../Columns/StatusColumn.js';
 import '../Columns/CompletedColumn.js';
 import '../Columns/PriorityColumn.js';
-import '../Columns/TypeColumn.js'
+import '../Columns/TypeColumn.js';
+import '../Columns/SprintStatusColumn.js';
 import Task from '../Models/Task.js';
-import { WidgetHelper } from '@bryntum/gantt';
+import { WidgetHelper, TaskMenu, Toast } from '@bryntum/gantt';
+import { environment } from '../../environments/environment';
 
 const ganttConfig = {
-    dependencyIdField : 'wbsCode',
-    project           : {
-        stm : {
-            autoRecord : true
+    dependencyIdField: 'wbsCode',
+    project: {
+        stm: {
+            autoRecord: true
         },
-        taskStore : {
-            modelClass : Task,
-            autoLoad   : true,
-            readUrl    : 'api/InitialData'
+        taskStore: {
+            modelClass: Task,
+            autoLoad: true,
+            listeners: {
+                load: async ({ source }) => {
+                    await source.project.commitAsync();
+                    source.project.stm.enable();
+                }
+            }
+
         },
         resourceStore : {
             autoLoad : true,
@@ -28,107 +36,213 @@ const ganttConfig = {
             autoReload : true
         }
     },
-    startDate : '2019-01-20',
-    endDate : '2022-12-31',
-    columns : [
-        { type : 'wbs', text : ' ' },
-        { type : 'name',text : 'Title', width : 250 },
-        { 
-            type : 'resourceassignment',
-            text : 'Resource',
-            width : 120,
-            showAvatars : false,
-            itemTpl : assignment => assignment.resourceName,
-            editor : {
-                chipView : {
-                    itemTpl : assignment => assignment.resourceName
+    //tooltip: true,
+    columns: [
+        { type: 'wbs', text: ' ' },
+        { type: 'name', text: 'Title', width: 250 },
+        {
+            type: 'resourceassignment',
+            text: 'Resource',
+            width: 150,
+            showAvatars: false,
+            itemTpl: (assignment) => assignment.resourceName,
+            editor: {
+                chipView: {
+                    itemTpl: (assignment) => assignment.resourceName
+                }
+            }
+        },
+        { type: 'startdate', text: 'Start Date' },
+        { type: 'enddate', text: 'End Date' },
+        { type: 'completedcolumn', width: 150, field: 'completed' },
+        { type: 'sprintstatuscolumn', text: 'Sprint Status', field: 'SprintStatus', width: 150 },
+        { type: 'typecolumn', width: 200, text: 'Task Type' },
+        {
+            type: 'statuscolumn',
+            field: 'status',
+            width: 150,
+            text: 'Task Status'
+        },
+        {
+            type: 'prioritycolumn',
+            field: 'priority',
+            text: 'Task Priority',
+            width: 150
+        }
+    ],
+    subGridConfigs: {
+        locked: {
+            flex: 3
+        },
+        normal: {
+            flex: 4
+        }
+    },
+    columnLines: false,
+    features: {
+        taskMenu: {
+            items: {
+                convertToMilestone : false,
+                cut : false,
+                outdent : false,
+                indent : false,
+                deleteTask: {
+                    text: 'Remove'
+                },
+                viewInDevlog: {
+                    text: 'View on Devlog',
+                    icon: 'b-fa-external-link-alt',
+                    weight: 200,
+                    onItem: (event) => {
+                        const taskRecord = event.taskRecord;
+                        if (taskRecord) {
+                            const taskGuid = taskRecord.data.TaskGuid || taskRecord.id;
+                            if (taskGuid) {
+                                const url = `http://devlog.workablemanagement.solutions/Task/Index?TaskGuid=${taskGuid}`;
+                                window.open(url, '_blank');
+                            } else {
+                                console.error('Task GUID not found for this record');
+                            }
+                        }
+                    }
+                },
+            }
+        },        
+        rollups: {
+            disabled: true
+        },
+        baselines: {
+            disabled: true
+        },
+        progressLine: {
+            disabled: true,
+            statusDate: new Date(2019, 0, 25)
+        },
+        filter: true,
+        dependencyEdit: true,
+        timeRanges: {
+            showCurrentTimeLine: true
+        },
+        labels: {
+            left: {
+                field: 'name',
+                editor: {
+                    type: 'textfield'
+                }
+            }
+        },
+        taskEdit: {
+            items: {
+                generalTab: {
+                    items: {
+                        plannedHours: {
+                            type: 'numberfield',
+                            label: 'Planned Hours',
+                            name: 'plannedHours',
+                            weight: 100
+                        },
+                        statusField: {
+                            type: 'combo',
+                            label: 'Status',
+                            name: 'status',
+                            items: [
+                                'Assigned',
+                                'Completed',
+                                'InProgress',
+                                'Parked',
+                                'Unassigned',
+                                'DELETED',
+                                'Requested',
+                                'AwaitingFeedback'
+                            ],
+                            weight: 110,
+                            columnWidth: 0.5
+                        },
+                        priorityField: {
+                            type: 'combo',
+                            label: 'Priority',
+                            name: 'priority',
+                            items: ['Critical', 'Low', 'Urgent'],
+                            weight: 120,
+                            columnWidth: 0.5
+                        },
+                        typeField: {
+                            type: 'combo',
+                            label: 'Type',
+                            name: 'type',
+                            items: [
+                                'Bug',
+                                'Change Request',
+                                'New Development',
+                                'Nuisance Request',
+                                'Report Request',
+                                'Support Request',
+                                'Training Issue',
+                                'System Generated Check'
+                            ],
+                            weight: 130,
+                            columnWidth: 0.5
+                        },
+                        Sprintcompleted: {
+                            type: 'combo',
+                            label: 'Completed',
+                            name: 'completed',
+                            items: ['Completed', 'NotCompleted'],
+                            columnWidth: 0.5
+                        },
+                        sprintStatus: {
+                            type: 'combo',
+                            label: 'Sprint Status',
+                            name: 'SprintStatus',
+                            items: [
+                                'New',
+                                'In Progress',
+                                'Completed',
+                                'In QA',
+                                'In Staging',
+                                'In Live'
+                            ],
+                            columnWidth: 0.5
+                        },
+                        effort: false,
+                        duration: false,
+                        percentDone: false
+                    }
+                },
+                notesTab: {
+                    title: 'Task Description'
+                },
+                predecessorsTab: false,
+                successorsTab: false,
+                advancedTab: false
+            }
+        },
+        pdfExport: {
+            exportServer: 'http://localhost:8080', // URL of your running export server
+            translateURLsToAbsolute: 'http://localhost:8080/resources',
+            openAfterExport: true, // Automatically download the file after export
+            showExportDialog: true // Show export settings dialog
+        },
+    },
+    listeners: {
+                beforeTaskEditShow: ({ editor, taskRecord }) => {
+                    editor.widgetMap.plannedHours.hidden =
+                        !taskRecord.data.hasOwnProperty('plannedHours');
+                    editor.widgetMap.statusField.hidden =
+                        !taskRecord.data.hasOwnProperty('status');
+                    editor.widgetMap.priorityField.hidden =
+                        !taskRecord.data.hasOwnProperty('priority');
+                    editor.widgetMap.typeField.hidden =
+                        !taskRecord.data.hasOwnProperty('type');
+                    editor.widgetMap.Sprintcompleted.hidden =
+                        !taskRecord.data.hasOwnProperty('completed');
+                    editor.widgetMap.sprintStatus.hidden =
+                        !taskRecord.data.hasOwnProperty('SprintStatus');
                 }
             },
-        },
-        // {
-        //     type: 'widget',
-        //     text: '',
-        //     width: 110,
-        //     widgets: [{
-        //         type: 'button',
-        //         cls: 'b-blue b-raised',
-        //         icon: 'b-icon b-icon-external-link',
-        //         text: 'Devlog',
-        //         tooltip: 'View task on Devlog',
-        //         onAction: ({ record }) => {
-        //             const taskGuid = record.TaskGuid || record.id;
-        //             const url = `http://devlog.workablemanagement.solutions/Task/Index?TaskGuid=${taskGuid}`;
-        //             window.open(url, '_blank');
-        //         }
-        //     }],
-        //     // No need to use WidgetHelper.createWidget in the renderer, as widgets array configures them
-        // },
-        { type : 'startdate', text : 'Start Date' },
-        { type : 'enddate', text : 'End Date' },
-        { type : 'completedcolumn', width : 150, field : 'completed' },
-        { type : 'typecolumn' , width : 200, text: 'Task Type' },
-        { type : 'statuscolumn', field : 'status', width : 150, text: 'Task Status' },
-        { type : 'prioritycolumn', field : 'priority', text : 'Task Priority', width : 150 },
-    ],
-    subGridConfigs : {
-        locked : {
-            flex : 3
-        },
-        normal : {
-            flex : 4
-        }
-    },
-    columnLines : false,
-    features : {
-        rollups : {
-            disabled : true
-        },
-        baselines : {
-            disabled : true
-        },
-        progressLine : {
-            disabled   : true,
-            statusDate : new Date(2019, 0, 25)
-        },
-        filter         : true,
-        dependencyEdit : true,
-        timeRanges     : {
-            showCurrentTimeLine : true
-        },
-        labels : {
-            left : {
-                field : 'name',
-                editor : {
-                    type : 'textfield'
-                }
-            }
-        },
-        taskEdit : {
-            items : {
-                predecessorsTab : false,
-                successorsTab : false,
-                advancedTab : false,
-                generalTab : {
-                    items : {
-                        percentDone : false,
-                        effort : false,
-                        // newGeneralField : {
-                        //     type   : 'textfield',
-                        //     weight : 355,
-                        //     label  : 'New field in General Tab',
-                        //     // Name of the field matches data field name, so value is loaded/saved automatically
-                        //     name   : 'custom'
-                        // }
-                    }
-                }
-            }
-        }
-    },
-    // tbar : {
-    //     type : 'gantttoolbar'
-    // }
-     tbar : {
-         type : 'gantttoolbar' as 'toolbar' // Explicitly cast the type to satisfy TypeScript
-     }
+    tbar: {
+        type: 'gantttoolbar' as 'toolbar' // Explicitly cast the type to satisfy TypeScript
+    }
+
 };
 export default ganttConfig;
